@@ -670,8 +670,8 @@ static void got_key(TickitTerm *tt, TermKey *tk, TermKeyKey *key)
     default:                    info.type = -1; break;
     }
 
-    /* Translate PRESS of buttons >= 4 into wheel events */
-    if(ev == TERMKEY_MOUSE_PRESS && info.button >= 4) {
+    /* Translate PRESS or RELEASE of buttons >= 4 into wheel events */
+    if(info.button >= 4) {
       info.type = TICKIT_MOUSEEV_WHEEL;
       info.button -= (4 - TICKIT_MOUSEWHEEL_UP);
     }

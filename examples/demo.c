@@ -121,7 +121,17 @@ static int render_mouse(TickitWindow *win, TickitEventFlags flags, void *_info, 
   }
 
   if(lastmouse.type == TICKIT_MOUSEEV_WHEEL) {
-    tickit_renderbuffer_text(rb, lastmouse.button == TICKIT_MOUSEWHEEL_DOWN ? "down" : "up");
+    const char *dir = NULL;
+    switch(lastmouse.button) {
+      case TICKIT_MOUSEWHEEL_UP:    dir = "up";    break;
+      case TICKIT_MOUSEWHEEL_DOWN:  dir = "down";  break;
+      case TICKIT_MOUSEWHEEL_LEFT:  dir = "left";  break;
+      case TICKIT_MOUSEWHEEL_RIGHT: dir = "right"; break;
+    }
+    if(dir)
+      tickit_renderbuffer_text(rb, dir);
+    else
+      tickit_renderbuffer_text(rb, "??");
   }
   else {
     tickit_renderbuffer_textf(rb, "button %d", lastmouse.button);

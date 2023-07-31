@@ -279,6 +279,8 @@ typedef enum {
 enum {
   TICKIT_MOUSEWHEEL_UP = 1,
   TICKIT_MOUSEWHEEL_DOWN,
+  TICKIT_MOUSEWHEEL_LEFT,
+  TICKIT_MOUSEWHEEL_RIGHT,
 };
 
 typedef struct {
