@@ -44,6 +44,17 @@ TESTFILES=$(TESTSOURCES:.c=.t)
 
 EXAMPLESOURCES=$(sort $(wildcard examples/*.c))
 
+ifneq ($(shell pkg-config glib-2.0 && echo 1),1)
+  EXAMPLESOURCES:=$(filter-out examples/evloop-glib.c, $(EXAMPLESOURCES))
+endif
+
+ifneq ($(shell pkg-config libuv && echo 1),1)
+  EXAMPLESOURCES:=$(filter-out examples/evloop-libuv.c, $(EXAMPLESOURCES))
+endif
+
+EXAMPLEOBJECTS=$(EXAMPLESOURCES:.c=.lo)
+EXAMPLES=$(EXAMPLESOURCES:.c=)
+
 VERSION_CURRENT=3
 VERSION_REVISION=0
 VERSION_AGE=0
@@ -93,24 +104,17 @@ clean-test:
 .PHONY: clean
 clean: clean-test
 	$(LIBTOOL) --mode=clean rm -f $(OBJECTS)
+	$(LIBTOOL) --mode=clean rm -f $(EXAMPLEOBJECTS) $(EXAMPLES)
 	$(LIBTOOL) --mode=clean rm -f $(LIBRARY)
-
-ifneq ($(shell pkg-config glib-2.0 && echo 1),1)
-  EXAMPLESOURCES:=$(filter-out examples/evloop-glib.c, $(EXAMPLESOURCES))
-endif
 
 examples/evloop-glib.lo: CFLAGS +=$(shell pkg-config --cflags glib-2.0)
 examples/evloop-glib:    LDFLAGS+=$(shell pkg-config --libs   glib-2.0)
-
-ifneq ($(shell pkg-config libuv && echo 1),1)
-  EXAMPLESOURCES:=$(filter-out examples/evloop-libuv.c, $(EXAMPLESOURCES))
-endif
 
 examples/evloop-libuv.lo: CFLAGS +=$(shell pkg-config --cflags libuv)
 examples/evloop-libuv:    LDFLAGS+=$(shell pkg-config --libs   libuv)
 
 .PHONY: examples
-examples: $(EXAMPLESOURCES:.c=)
+examples: $(EXAMPLES)
 
 examples/%.lo: examples/%.c $(HFILES)
 	$(LIBTOOL) --mode=compile --tag=CC $(CC) $(CFLAGS) -o $@ -c $<
