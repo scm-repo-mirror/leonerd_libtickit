@@ -659,20 +659,43 @@ void tickit_term_await_started_tv(TickitTerm *tt, const struct timeval *timeout)
   tt->state = STARTED;
 }
 
+static const char * const modnames[] = {
+  [0] = "",
+  [TICKIT_MOD_SHIFT]                                = "SHIFT",
+  [TICKIT_MOD_ALT]                                  = "ALT",
+  [TICKIT_MOD_ALT|TICKIT_MOD_SHIFT]                 = "ALT+SHIFT",
+  [TICKIT_MOD_CTRL]                                 = "CTRL",
+  [TICKIT_MOD_CTRL|TICKIT_MOD_SHIFT]                = "CTRL+SHIFT",
+  [TICKIT_MOD_CTRL|TICKIT_MOD_ALT]                  = "CTRL+ALT",
+  [TICKIT_MOD_CTRL|TICKIT_MOD_ALT|TICKIT_MOD_SHIFT] = "CTRL+ALT+SHIFT",
+};
+
 static void debug_key(TickitKeyEventInfo *info)
 {
   static const char * const evnames[] = { NULL, "KEY", "TEXT" };
+  const char * evname = evnames[info->type];
+  int mod = info->mod;
 
-  DEBUG_LOGF("Ik", "Key event %s %s (mod=%02x)",
-      evnames[info->type], info->str, info->mod);
+  if(!mod)
+    tickit_debug_logf("Ik", "Key event %s %s", evname, info->str);
+  else if(info->mod <= (TICKIT_MOD_CTRL|TICKIT_MOD_ALT|TICKIT_MOD_SHIFT))
+    tickit_debug_logf("Ik", "Key event %s %s (mod=%s)", evname, info->str, modnames[mod]);
+  else
+    tickit_debug_logf("Ik", "Key event %s %s (mod=%02x)", evname, info->str, mod);
 }
 
 static void debug_mouse(TickitMouseEventInfo *info)
 {
   static const char * const evnames[] = { NULL, "PRESS", "DRAG", "RELEASE", "WHEEL" };
+  const char * evname = evnames[info->type];
+  int mod = info->mod;
 
-  DEBUG_LOGF("Im", "Mouse event %s %d @%d,%d (mod=%02x)",
-      evnames[info->type], info->button, info->col, info->line, info->mod);
+  if(!mod)
+    tickit_debug_logf("Im", "Mouse event %s %d @%d,%d", evname, info->button, info->col, info->line);
+  else if(mod <= (TICKIT_MOD_CTRL|TICKIT_MOD_ALT|TICKIT_MOD_SHIFT))
+    tickit_debug_logf("Im", "Mouse event %s %d @%d,%d (mod=%s)", evname, info->button, info->col, info->line, modnames[mod]);
+  else
+    tickit_debug_logf("Im", "Mouse event %s %d @%d,%d (mod=%02x)", evname, info->button, info->col, info->line, mod);
 }
 
 static void got_key(TickitTerm *tt, TermKey *tk, TermKeyKey *key)
