@@ -1,3 +1,10 @@
+2023-09-04        0.4.4
+  * Support superscript/subscript rendering by means of a `sizepos` pen
+    attribute
+  * Also accept `\e[<` for key_mouse to enable vt200_mouse mode, because some
+    terminfos lie
+  * Handle mouse buttons 6/7 as horizontal scrolling
+
 2022-08-25        0.4.3
   * Added tickit_term_get_drivername()
   * Added concept of driver-private termctls
