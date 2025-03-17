@@ -123,8 +123,10 @@ static void evloop_destroy(void *data)
     free(evdata->pollfds);
   if(evdata->pollwatches)
     free(evdata->pollwatches);
+#if HAVE_PPOLL
   if(evdata->signums)
     free(evdata->signums);
+#endif
 
   if(signal_observer == evdata)
     signal_observer = NULL;
