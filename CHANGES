@@ -1,3 +1,7 @@
+2025-03-17        0.4.5
+  * Ensure that evloop-default.c will still compile on OSes that do not have
+    `ppoll()`
+
 2023-09-04        0.4.4
   * Support superscript/subscript rendering by means of a `sizepos` pen
     attribute
