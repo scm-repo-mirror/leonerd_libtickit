@@ -389,6 +389,8 @@ static void fire_io_event(uv_poll_t *handle, int status, int events)
     cond |= TICKIT_IO_IN;
   if(events & UV_WRITABLE)
     cond |= TICKIT_IO_OUT;
+  if(events & UV_PRIORITIZED)
+    cond |= TICKIT_IO_PRI;
   if(events & UV_DISCONNECT)
     cond |= TICKIT_IO_HUP;
   if(status < 0)
@@ -412,6 +414,8 @@ static bool el_io(void *data, int fd, TickitIOCondition cond, TickitBindFlags fl
     ev |= UV_READABLE;
   if(cond & TICKIT_IO_OUT)
     ev |= UV_WRITABLE;
+  if(cond & TICKIT_IO_PRI)
+    ev |= UV_PRIORITIZED;
   if(cond & TICKIT_IO_HUP)
     ev |= UV_DISCONNECT;
 

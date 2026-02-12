@@ -85,6 +85,7 @@ typedef enum {
 typedef enum {
   TICKIT_IO_IN    = 1<<0,
   TICKIT_IO_OUT   = 1<<1,
+  TICKIT_IO_PRI   = 1<<5,
   TICKIT_IO_HUP   = 1<<2,
   TICKIT_IO_ERR   = 1<<3,
   TICKIT_IO_INVAL = 1<<4,

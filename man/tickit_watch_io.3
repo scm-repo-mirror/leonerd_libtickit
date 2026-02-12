@@ -31,6 +31,9 @@ The file descriptor is ready to perform an input operation, such as reading byte
 .B TICKIT_IO_OUT
 The file descriptor is ready to perform an output operation, such as writing bytes.
 .TP
+.B TICKIT_IO_PRI
+The file descriptor has a high-priority condition to report.
+.TP
 .B TICKIT_IO_HUP
 The file descriptor is in a hang-up condition. Typically this means that a connection such as a socket or pipe has been closed by the peer.
 .PP

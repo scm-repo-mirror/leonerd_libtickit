@@ -375,6 +375,8 @@ static gboolean fire_io_event(gint fd, GIOCondition gcond, gpointer watch)
     cond |= TICKIT_IO_IN;
   if(gcond & G_IO_OUT)
     cond |= TICKIT_IO_OUT;
+  if(gcond & G_IO_PRI)
+    cond |= TICKIT_IO_PRI;
   if(gcond & G_IO_HUP)
     cond |= TICKIT_IO_HUP;
   if(gcond & G_IO_ERR)
